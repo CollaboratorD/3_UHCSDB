@@ -1,0 +1,24 @@
+#!/bin/bash
+# usage: `bash setup.sh`
+# link data files into uhcsdb web application
+# run download.sh first to download dataset into structure shown in README.md
+
+# copy sqlite db
+# cp uhcsdata/microstructures.sqlite uhcsdb/uhcsdb
+ln -s uhcsdata/microstructures.sqlite uhcsdb/uhcsdb/microstructures.sqlite
+
+# link to microstructure representations from uhcsdb
+ln -s uhcsdata/representations uhcsdb/uhcsdb/static/representations
+
+# link to reduced dimensionality representations from uhcsdb
+ln -s uhcsdata/embed uhcsdb/uhcsdb/static/embed
+
+# convert fullsized images to .png for browser compatibility
+bash tools/convert_to_png.sh
+
+# make thumbnails for dataviz app
+bash tools/make_thumbs.sh
+
+# start dataviz app
+cd uhcsdb
+bash uhcsdb/launch.sh
